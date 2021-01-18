@@ -5,3 +5,8 @@
 
 obj/
 bin/
+
+.DS_Store
+.vscode/
+
+*.zip
