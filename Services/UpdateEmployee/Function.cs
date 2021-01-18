@@ -1,4 +1,7 @@
-﻿using Amazon.Lambda.Core;
+﻿using System.Threading.Tasks;
+using Amazon.Lambda;
+using Amazon.Lambda.Core;
+using Amazon.Lambda.Model;
 using Amazon.XRay.Recorder.Handlers.AwsSdk;
 
 namespace UpdateEmployee
@@ -9,15 +12,23 @@ namespace UpdateEmployee
         {
             Initialize();
         }
+
         static void Initialize()
         {
             AWSSDKHandler.RegisterXRayForAllServices();
         }
 
         [Amazon.Lambda.Core.LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
-        public void Invoke(object input, ILambdaContext content)
+        public async Task Invoke(object input, ILambdaContext content)
         {
             content.Logger.LogLine("Hello, world!");
+
+            var lambdaClient = new AmazonLambdaClient();
+
+            await lambdaClient.InvokeAsync(new InvokeRequest
+            {
+                FunctionName = "fetch_employee_nanoservice"
+            });
         }
     }
 }

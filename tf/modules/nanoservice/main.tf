@@ -45,6 +45,14 @@ resource "aws_iam_role_policy" "role_policy_for_nanoservice" {
         ],
         "Effect": "Allow",
         "Resource": "arn:aws:logs:*:*:*"
+      },
+      {
+        "Action": [
+          "lambda:InvokeFunction",
+          "lambda:InvokeAsync"
+        ],
+        "Effect": "Allow",
+        "Resource": "*"
       }
     ]
   }
