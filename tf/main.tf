@@ -1,25 +1,38 @@
 provider "aws" {
-  alias = "usr1"
+  alias  = "usr1"
   region = "us-east-1"
 }
 
 module "update_employee" {
-  source = "./modules/update_employee"
+  source = "./modules/nanoservice"
   providers = {
     aws = aws.usr1
   }
+
+  dotnet_service_name = var.dotnet_service_name
+  service_name        = var.service_name
+  service_handler     = var.service_handler
 }
 
 module "fetch_employee" {
-  source = "./modules/fetch_employee"
+  source = "./modules/nanoservice"
   providers = {
     aws = aws.usr1
   }
+
+  dotnet_service_name = var.dotnet_service_name
+  service_name        = var.service_name
+  service_handler     = var.service_handler
 }
 
 module "merge_employee" {
-  source = "./modules/merge_employee"
+  source = "./modules/nanoservice"
   providers = {
     aws = aws.usr1
   }
+
+  dotnet_service_name = var.dotnet_service_name
+  service_name        = var.service_name
+  service_handler     = var.service_handler
 }
+

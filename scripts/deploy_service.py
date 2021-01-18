@@ -7,11 +7,9 @@ import time
 DOTNET_TARGET = "netcoreapp3.1"
 
 service_to_proj = {
-  "update_employee": os.path.join("Services", "UpdateEmployee")
-}
-
-service_to_tf = {
-  "update_employee": os.path.join("tf", "modules", "update_employee")
+  "update_employee": os.path.join("Services", "UpdateEmployee"),
+  "fetch_employee": os.path.join("Services", "FetchEmployee"),
+  "merge_employee": os.path.join("Services", "MergeEmployee")
 }
 
 def section(name):
@@ -22,18 +20,14 @@ def section(name):
 
 
 def create_package(args):
+  cleanup = True if args.cleanup == "true" else False
   cwd = os.getcwd()
   service = args.service
   project_location = service_to_proj[service]
-  module = service_to_tf[service]
   
   section(f'Cleaning {project_location}')
   clean_cmd = ["dotnet", "clean"]
   clean_cmd_result = subprocess.run(clean_cmd, cwd="Services")
-  print('Done.')
-
-  section(f'Waiting {project_location}')
-  time.sleep(0.5)
   print('Done.')
 
   section(f'Packaging {project_location}')
@@ -50,12 +44,25 @@ def create_package(args):
   print('Done.')
 
   section(f'Running Terraform')
-  tf_cmd = ["terraform", "apply", "-auto-approve"]
+  tfvar_file = os.path.join("tfvars", f"{service}.tfvars.json")
+  tf_cmd = [
+    "terraform", 
+    "apply", 
+    "-auto-approve",
+    f"-var-file={tfvar_file}",
+    f"-target=module.{service}"
+    ]
   tf_cmd_result = subprocess.run(tf_cmd, cwd="tf")
   print('Done.')
+
+  if cleanup:
+    section("Cleaning up")
+    os.remove(zip_pkg_target_location)
+    print('Done.')
 
 
 if __name__ == "__main__":
   parser = argparse.ArgumentParser("deploy_service")
-  parser.add_argument("service", help="Service to deploy", choices=["update_employee", "merge_employee", "fetch_employee"])
+  parser.add_argument("--service", help="Service to deploy", choices=["update_employee", "merge_employee", "fetch_employee"])
+  parser.add_argument("--cleanup", help="Whether to remove the ZIP pkg after deploy.", default="true")
   create_package(parser.parse_args())
