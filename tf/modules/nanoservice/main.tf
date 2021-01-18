@@ -1,7 +1,7 @@
 resource "aws_iam_role" "role_for_nanoservice" {
   name = "role_for_${var.service_name}_nanoservice"
 
-  assume_role_policy = <<EOF
+  assume_role_policy = <<-EOF
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -18,6 +18,39 @@ resource "aws_iam_role" "role_for_nanoservice" {
 EOF
 }
 
+resource "aws_iam_role_policy" "role_policy_for_nanoservice" {
+  name = "role_policy_for_${var.service_name}_nanoservice"
+  role = aws_iam_role.role_for_nanoservice.id
+
+  policy = <<-EOF
+  {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Action": [
+          "xray:PutTraceSegments",
+          "xray:PutTelemetryRecords",
+          "xray:GetSamplingRules",
+          "xray:GetSamplingTargets",
+          "xray:GetSamplingStatisticSummaries"
+        ],
+        "Effect": "Allow",
+        "Resource": "*"
+      },
+      {
+        "Action": [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+        ],
+        "Effect": "Allow",
+        "Resource": "arn:aws:logs:*:*:*"
+      }
+    ]
+  }
+  EOF
+}
+
 resource "aws_lambda_function" "nanoservice" {
   function_name = "${var.service_name}_nanoservice"
   runtime       = "dotnetcore3.1"
@@ -28,4 +61,8 @@ resource "aws_lambda_function" "nanoservice" {
   source_code_hash = filebase64sha256("${var.service_name}_pkg.zip")
 
   role          = aws_iam_role.role_for_nanoservice.arn
+
+  tracing_config {
+    mode = "Active"
+  }
 }
