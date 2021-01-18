@@ -23,7 +23,7 @@ resource "aws_lambda_function" "update_employee_nanoservice" {
   runtime       = "dotnetcore3.1"
   timeout       = 60
 
-  handler       = "UpdateEmployee::Function.Handlers::Invoke"
+  handler       = "UpdateEmployee::Function::Invoke"
   filename      = "update_employee_package.zip"
   source_code_hash = filebase64sha256("update_employee_package.zip")
 
