@@ -3,22 +3,22 @@ provider "aws" {
   region = "us-west-1"
 }
 
-module "put_socks_on" {
-  source = "./modules/put_socks_on"
+module "update_employee" {
+  source = "./modules/update_employee"
   providers = {
     aws = aws.usw1
   }
 }
 
-module "put_shoes_on" {
-  source = "./modules/put_shoes_on"
+module "fetch_employee" {
+  source = "./modules/fetch_employee"
   providers = {
     aws = aws.usw1
   }
 }
 
-module "tie_shoes" {
-  source = "./modules/tie_shoes"
+module "merge_employee" {
+  source = "./modules/merge_employee"
   providers = {
     aws = aws.usw1
   }
