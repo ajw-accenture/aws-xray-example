@@ -3,7 +3,6 @@ import os
 import argparse
 import shutil
 
-# 
 
 def do_zip(args):
   print(os.getcwd())
