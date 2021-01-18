@@ -1,25 +1,25 @@
 provider "aws" {
-  alias = "usw1"
-  region = "us-west-1"
+  alias = "usr1"
+  region = "us-east-1"
 }
 
 module "update_employee" {
   source = "./modules/update_employee"
   providers = {
-    aws = aws.usw1
+    aws = aws.usr1
   }
 }
 
 module "fetch_employee" {
   source = "./modules/fetch_employee"
   providers = {
-    aws = aws.usw1
+    aws = aws.usr1
   }
 }
 
 module "merge_employee" {
   source = "./modules/merge_employee"
   providers = {
-    aws = aws.usw1
+    aws = aws.usr1
   }
 }

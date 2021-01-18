@@ -23,9 +23,9 @@ resource "aws_lambda_function" "update_employee_nanoservice" {
   runtime       = "dotnetcore3.1"
   timeout       = 60
 
-  handler       = "UpdateEmployee::Function::Invoke"
-  filename      = "update_employee_package.zip"
-  source_code_hash = filebase64sha256("update_employee_package.zip")
+  handler       = "UpdateEmployee::UpdateEmployee.Function::Invoke"
+  filename      = "update_employee_pkg.zip"
+  source_code_hash = filebase64sha256("update_employee_pkg.zip")
 
-  role          = aws_iam_role.role_update_employee_on_nanoservice.arn
+  role          = aws_iam_role.role_for_update_employee_nanoservice.arn
 }
