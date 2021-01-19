@@ -25,7 +25,7 @@ namespace UpdateEmployee
 
             var lambdaClient = new AmazonLambdaClient();
 
-            await lambdaClient.InvokeAsync(new InvokeRequest
+            InvokeResponse employee = await lambdaClient.InvokeAsync(new InvokeRequest
             {
                 FunctionName = "fetch_employee_nanoservice"
             });
