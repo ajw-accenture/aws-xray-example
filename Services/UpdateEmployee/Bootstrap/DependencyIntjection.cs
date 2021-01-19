@@ -3,10 +3,11 @@ using Amazon.XRay.Recorder.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
+using UpdateEmployee.Services;
 
-namespace UpdateEmployee
+namespace UpdateEmployee.Bootstrap
 {
-    public class Container
+    public class DependencyInjection
     {
         public static IServiceProvider Initialize()
         {

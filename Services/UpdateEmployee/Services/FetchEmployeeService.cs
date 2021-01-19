@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Shared.Models;
 
-namespace UpdateEmployee
+namespace UpdateEmployee.Services
 {
     public class FetchEmployeeService: IFetchEmployeeService
     {
@@ -31,12 +31,15 @@ namespace UpdateEmployee
         }
 
         private async Task<InvokeResponse> CallFetchEmployeeLambda() {
+            _recorder.BeginSubsegment("CallFetchEmployeeLambda: Making the call");
             var lambdaClient = new AmazonLambdaClient();
 
             var request = await lambdaClient.InvokeAsync(new InvokeRequest
             {
                 FunctionName = "fetch_employee_nanoservice"
             });
+
+            _recorder.EndSubsegment();
 
             return request;
         }

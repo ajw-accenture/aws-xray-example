@@ -1,8 +1,10 @@
 ﻿using System.Threading.Tasks;
 using Amazon.Lambda.Core;
-using Amazon.XRay.Recorder.Handlers.AwsSdk;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using UpdateEmployee.Services;
+using Amazon.XRay.Recorder.Core;
+using UpdateEmployee.Bootstrap;
 
 namespace UpdateEmployee
 {
@@ -15,15 +17,18 @@ namespace UpdateEmployee
 
         static void Initialize()
         {
-            AWSSDKHandler.RegisterXRayForAllServices();
+            var recorder = new AWSXRayRecorderBuilder().Build();
+            AWSXRayRecorder.InitializeInstance(null, recorder);
         }
 
         [Amazon.Lambda.Core.LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
         public async Task Invoke(object input, ILambdaContext context)
         {
-            var container = Container.Initialize();
-            var logger = container.GetService<ILogger<Function>>();
-            var employeeService = container.GetService<IFetchEmployeeService>();
+            var provider = DependencyInjection.Initialize();
+            var recorder = AWSXRayRecorder.Instance;
+
+            var logger = provider.GetService<ILogger<Function>>();
+            var employeeService = provider.GetService<IFetchEmployeeService>();
 
             var employee = await employeeService.ByPersonnelId("some-employee-id");
 

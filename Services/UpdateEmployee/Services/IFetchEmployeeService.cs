@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Shared.Models;
 
-namespace UpdateEmployee
+namespace UpdateEmployee.Services
 {
     public interface IFetchEmployeeService {
         Task<Employee> ByPersonnelId(string id);
