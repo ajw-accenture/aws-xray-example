@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.Model;
 using Amazon.Lambda.Core;
+using Amazon.Lambda.Serialization.SystemTextJson;
 using Amazon.XRay.Recorder.Handlers.AwsSdk;
 using Shared.Models;
 
@@ -20,7 +21,7 @@ namespace FetchEmployee
             AWSSDKHandler.RegisterXRayForAllServices();
         }
 
-        [Amazon.Lambda.Core.LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
+        [LambdaSerializer(typeof(DefaultLambdaJsonSerializer))]
         public async Task<Employee> Invoke(object input, ILambdaContext context)
         {
             var dynamo = new AmazonDynamoDBClient();

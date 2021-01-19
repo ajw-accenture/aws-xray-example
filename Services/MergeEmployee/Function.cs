@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Amazon.Lambda.Core;
+using Amazon.Lambda.Serialization.SystemTextJson;
 using Amazon.SimpleNotificationService;
 using Amazon.SimpleNotificationService.Model;
 using Amazon.XRay.Recorder.Handlers.AwsSdk;
@@ -19,7 +20,7 @@ namespace MergeEmployee
             AWSSDKHandler.RegisterXRayForAllServices();
         }
 
-        [Amazon.Lambda.Core.LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
+        [LambdaSerializer(typeof(DefaultLambdaJsonSerializer))]
         public async Task Invoke(object input, ILambdaContext context)
         {
             context.Logger.LogLine("Hello, world!");

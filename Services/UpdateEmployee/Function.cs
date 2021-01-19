@@ -6,6 +6,7 @@ using UpdateEmployee.Services;
 using Amazon.XRay.Recorder.Core;
 using UpdateEmployee.Bootstrap;
 using Amazon.XRay.Recorder.Handlers.AwsSdk;
+using Amazon.Lambda.Serialization.SystemTextJson;
 
 namespace UpdateEmployee
 {
@@ -21,7 +22,7 @@ namespace UpdateEmployee
             AWSSDKHandler.RegisterXRayForAllServices();
         }
 
-        [Amazon.Lambda.Core.LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
+        [LambdaSerializer(typeof(DefaultLambdaJsonSerializer))]
         public async Task Invoke(object input, ILambdaContext context)
         {
             var provider = DependencyInjection.Initialize();
