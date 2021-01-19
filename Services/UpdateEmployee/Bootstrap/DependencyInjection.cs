@@ -12,7 +12,7 @@ namespace UpdateEmployee.Bootstrap
         public static IServiceProvider Initialize()
         {
             var recorder = AWSXRayRecorder.Instance;
-            recorder.BeginSubsegment("Initialize: stand up dependency injection container");
+            recorder.BeginSubsegment("SEG Hydrate Service Provider");
 
             var provider = BuildProvider();
 

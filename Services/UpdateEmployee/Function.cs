@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using UpdateEmployee.Services;
 using Amazon.XRay.Recorder.Core;
 using UpdateEmployee.Bootstrap;
+using Amazon.XRay.Recorder.Handlers.AwsSdk;
 
 namespace UpdateEmployee
 {
@@ -17,8 +18,7 @@ namespace UpdateEmployee
 
         static void Initialize()
         {
-            var recorder = new AWSXRayRecorderBuilder().Build();
-            AWSXRayRecorder.InitializeInstance(null, recorder);
+            AWSSDKHandler.RegisterXRayForAllServices();
         }
 
         [Amazon.Lambda.Core.LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]

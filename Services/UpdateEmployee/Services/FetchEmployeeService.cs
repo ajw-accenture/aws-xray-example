@@ -10,14 +10,15 @@ using Shared.Models;
 
 namespace UpdateEmployee.Services
 {
-    public class FetchEmployeeService: IFetchEmployeeService
+    public class FetchEmployeeService : IFetchEmployeeService
     {
         private const string _fetchEmployeeLambdaName = "fetch_employee_nanoservice";
 
         private readonly AWSXRayRecorder _recorder;
         private readonly ILogger<FetchEmployeeService> _logger;
 
-        public FetchEmployeeService(AWSXRayRecorder recorder, ILogger<FetchEmployeeService> logger) {
+        public FetchEmployeeService(AWSXRayRecorder recorder, ILogger<FetchEmployeeService> logger)
+        {
             _recorder = recorder;
             _logger = logger;
         }
@@ -30,8 +31,8 @@ namespace UpdateEmployee.Services
             return employee;
         }
 
-        private async Task<InvokeResponse> CallFetchEmployeeLambda() {
-            _recorder.BeginSubsegment("CallFetchEmployeeLambda: Making the call");
+        private async Task<InvokeResponse> CallFetchEmployeeLambda()
+        {
             var lambdaClient = new AmazonLambdaClient();
 
             var request = await lambdaClient.InvokeAsync(new InvokeRequest
@@ -39,13 +40,12 @@ namespace UpdateEmployee.Services
                 FunctionName = "fetch_employee_nanoservice"
             });
 
-            _recorder.EndSubsegment();
-
             return request;
         }
-    
-        private Employee ExtractEmployee(MemoryStream payloadStream) {
-            _recorder.BeginSubsegment("ExtractEmployee: bytes to employee");
+
+        private Employee ExtractEmployee(MemoryStream payloadStream)
+        {
+            _recorder.BeginSubsegment("SEG Extract Employee Object after Fetch Employee Call");
             var asBytes = payloadStream.ToArray();
             var asString = Encoding.UTF8.GetString(asBytes);
             var employee = JsonConvert.DeserializeObject<Employee>(asString);
