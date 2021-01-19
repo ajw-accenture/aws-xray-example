@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Amazon.Lambda.Core;
 using Amazon.SimpleNotificationService;
 using Amazon.SimpleNotificationService.Model;
@@ -25,8 +26,9 @@ namespace MergeEmployee
 
             var client = new AmazonSimpleNotificationServiceClient();
 
-            var snsTopicArn = context.ClientContext.Environment["EMPLOYEE_MERGE_SAVE_SNS_ARN"];
-            await client.PublishAsync(new PublishRequest {
+            var snsTopicArn = Environment.GetEnvironmentVariable("EMPLOYEE_MERGE_SAVE_SNS_ARN");
+            await client.PublishAsync(new PublishRequest
+            {
                 TopicArn = snsTopicArn,
                 Message = "{}"
             });
