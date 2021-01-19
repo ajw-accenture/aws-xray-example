@@ -1,5 +1,7 @@
-﻿using Amazon.Lambda.Core;
+﻿using System;
+using Amazon.Lambda.Core;
 using Amazon.XRay.Recorder.Handlers.AwsSdk;
+using Shared;
 
 namespace FetchEmployee
 {
@@ -16,8 +18,13 @@ namespace FetchEmployee
         }
 
         [Amazon.Lambda.Core.LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
-        public void Invoke(object input, ILambdaContext context)
+        public Employee Invoke(object input, ILambdaContext context)
         {
+            return new Employee {
+                PersonnelId = Guid.NewGuid().ToString(),
+                Name = "Dwight Shrute",
+                Department = "Nobody knows, not even Dwight"
+            };
         }
     }
 }

@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
-using Amazon.Lambda;
 using Amazon.Lambda.Core;
-using Amazon.Lambda.Model;
 using Amazon.XRay.Recorder.Handlers.AwsSdk;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace UpdateEmployee
 {
@@ -21,14 +21,13 @@ namespace UpdateEmployee
         [Amazon.Lambda.Core.LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
         public async Task Invoke(object input, ILambdaContext context)
         {
-            context.Logger.LogLine("Hello, world!");
+            var container = Container.Initialize();
+            var logger = container.GetService<ILogger<Function>>();
+            var employeeService = container.GetService<IFetchEmployeeService>();
 
-            var lambdaClient = new AmazonLambdaClient();
+            var employee = await employeeService.ByPersonnelId("some-employee-id");
 
-            InvokeResponse employee = await lambdaClient.InvokeAsync(new InvokeRequest
-            {
-                FunctionName = "fetch_employee_nanoservice"
-            });
+            logger.LogInformation($"Fetched employee: {employee.Name} ({employee.PersonnelId})");
         }
     }
 }
