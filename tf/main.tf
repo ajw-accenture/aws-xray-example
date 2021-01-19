@@ -44,3 +44,12 @@ module "employee_document_db" {
 
   db_name = var.db_name
 }
+
+module "employee_merge_save_data_bus" {
+  source = "./modules/data_bus"
+  providers = {
+    aws = aws.usr1
+  }
+
+  data_bus_name = var.data_bus_name
+}

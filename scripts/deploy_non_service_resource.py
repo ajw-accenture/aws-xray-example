@@ -10,13 +10,13 @@ def section(name):
     print('-'*72)
 
 
-class DeployDocDb:
+class DeployNonServiceResource:
     def __init__(self, args):
-        self.database = args.database
+        self.resource = args.resource
         self.tfvar_defaults_file_path = os.path.join(
             "tfvars", "defaults.tfvars.json")
         self.tfvar_file_path = os.path.join(
-            "tfvars", f"{self.database}.tfvars.json")
+            "tfvars", f"{self.resource}.tfvars.json")
 
     def run(self):
         self.__stage_apply_terraform()
@@ -29,7 +29,7 @@ class DeployDocDb:
             "-auto-approve",
             f"-var-file={self.tfvar_defaults_file_path}",
             f"-var-file={self.tfvar_file_path}",
-            f"-target=module.{self.database}"
+            f"-target=module.{self.resource}"
         ]
         tf_cmd_result = subprocess.run(tf_cmd, cwd="tf")
         if tf_cmd_result.returncode != 0:
@@ -39,12 +39,12 @@ class DeployDocDb:
 
 
 def run_script(args):
-    deploy = DeployDocDb(args)
+    deploy = DeployNonServiceResource(args)
     deploy.run()
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser("deploy_doc_db")
-    parser.add_argument("--database", help="Service to deploy",
-                        default="employee_document_db", choices=["employee_document_db"])
+    parser = argparse.ArgumentParser("deploy_non_service_resource")
+    parser.add_argument("--resource", help="Resource to deploy",
+                        choices=["employee_document_db", "employee_merge_save_data_bus"])
     run_script(parser.parse_args())
