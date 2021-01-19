@@ -60,7 +60,8 @@ resource "aws_iam_role_policy" "role_policy_for_nanoservice" {
           "dynamodb:BatchGetItem",
           "dynamodb:PutItem",
           "dynamodb:BatchWriteItem",
-          "dynamodb:UpdateItem"
+          "dynamodb:UpdateItem",
+          "dynamodb:Scan"
         ],
         "Effect": "Allow",
         "Resource": "arn:aws:dynamodb:*:*:table/employee_document_db"
