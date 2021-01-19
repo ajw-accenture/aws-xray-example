@@ -36,3 +36,11 @@ module "merge_employee" {
   service_handler     = var.service_handler
 }
 
+module "employee_document_db" {
+  source = "./modules/document_db"
+  providers = {
+    aws = aws.usr1
+  }
+
+  db_name = var.db_name
+}
