@@ -29,10 +29,15 @@ namespace UpdateEmployee
 
             var logger = provider.GetService<ILogger<Function>>();
             var employeeService = provider.GetService<IFetchEmployeeService>();
+            var mergeService = provider.GetService<IMergeEmployeeService>();
 
             var employee = await employeeService.ByPersonnelId("some-employee-id");
 
             logger.LogInformation($"Fetched employee: {employee.Name} ({employee.PersonnelId})");
+
+            await mergeService.MergeSave(employee);
+
+            logger.LogInformation($"Merge saved employee: {employee.PersonnelId}");
         }
     }
 }

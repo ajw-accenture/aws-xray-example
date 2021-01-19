@@ -26,13 +26,15 @@ namespace UpdateEmployee.Bootstrap
 
             servicesCollection.AddSingleton(AWSXRayRecorder.Instance);
 
-            servicesCollection.AddLogging((loggingBuilder) => {
+            servicesCollection.AddLogging((loggingBuilder) =>
+            {
                 loggingBuilder.ClearProviders();
                 loggingBuilder.SetMinimumLevel(LogLevel.Trace);
                 loggingBuilder.AddNLog();
             });
 
             servicesCollection.AddSingleton<IFetchEmployeeService, FetchEmployeeService>();
+            servicesCollection.AddSingleton<IMergeEmployeeService, MergeEmployeeService>();
 
             var provider = servicesCollection.BuildServiceProvider();
 
