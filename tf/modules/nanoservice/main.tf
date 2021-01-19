@@ -78,6 +78,9 @@ resource "aws_iam_role_policy" "role_policy_for_nanoservice" {
   EOF
 }
 
+data "aws_caller_identity" "current" {}
+data "aws_region" "current" {}
+
 resource "aws_lambda_function" "nanoservice" {
   function_name = "${var.service_name}_nanoservice"
   runtime       = "dotnetcore3.1"
@@ -92,5 +95,11 @@ resource "aws_lambda_function" "nanoservice" {
 
   tracing_config {
     mode = "Active"
+  }
+
+  environment {
+    variables = {
+      EMPLOYEE_MERGE_SAVE_SNS_ARN = "arn:aws:sns:${data.aws_region.name}:${data.aws_caller_identity.current.account_id}:employee_merge_save"
+    }
   }
 }
