@@ -1,4 +1,7 @@
-﻿using System;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.Model;
 using Amazon.Lambda.Core;
 using Amazon.XRay.Recorder.Handlers.AwsSdk;
 using Shared.Models;
@@ -18,12 +21,22 @@ namespace FetchEmployee
         }
 
         [Amazon.Lambda.Core.LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
-        public Employee Invoke(object input, ILambdaContext context)
+        public async Task<Employee> Invoke(object input, ILambdaContext context)
         {
-            return new Employee {
-                PersonnelId = Guid.NewGuid().ToString(),
-                Name = "Dwight Shrute",
-                Department = "Nobody knows, not even Dwight"
+            var dynamo = new AmazonDynamoDBClient();
+            var employees = await dynamo.ScanAsync(new ScanRequest
+            {
+                TableName = "employee_document_db",
+                Limit = 1
+            });
+
+            var firstEmployee = employees.Items.First();
+
+            return new Employee
+            {
+                PersonnelId = firstEmployee["personnel_id"].S,
+                Name = firstEmployee["name"].S,
+                Department = firstEmployee["department"].S
             };
         }
     }
