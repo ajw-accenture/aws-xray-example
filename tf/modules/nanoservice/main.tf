@@ -63,12 +63,13 @@ resource "aws_lambda_function" "nanoservice" {
   function_name = "${var.service_name}_nanoservice"
   runtime       = "dotnetcore3.1"
   timeout       = 60
+  memory_size   = 512
 
-  handler       = var.service_handler
-  filename      = "${var.service_name}_pkg.zip"
+  handler          = var.service_handler
+  filename         = "${var.service_name}_pkg.zip"
   source_code_hash = filebase64sha256("${var.service_name}_pkg.zip")
 
-  role          = aws_iam_role.role_for_nanoservice.arn
+  role = aws_iam_role.role_for_nanoservice.arn
 
   tracing_config {
     mode = "Active"
