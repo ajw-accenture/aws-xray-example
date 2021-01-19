@@ -3,12 +3,21 @@ provider "aws" {
   region = "us-east-1"
 }
 
+data "aws_region" "current" {
+  provider = aws.usr1
+}
+data "aws_caller_identity" "current" {
+  provider = aws.usr1
+}
+
 module "update_employee" {
   source = "./modules/nanoservice"
   providers = {
     aws = aws.usr1
   }
 
+  aws_region_name     = data.aws_region.current.name
+  aws_account_id      = data.aws_caller_identity.current.account_id
   dotnet_service_name = var.dotnet_service_name
   service_name        = var.service_name
   service_handler     = var.service_handler
@@ -20,6 +29,8 @@ module "fetch_employee" {
     aws = aws.usr1
   }
 
+  aws_region_name     = data.aws_region.current.name
+  aws_account_id      = data.aws_caller_identity.current.account_id
   dotnet_service_name = var.dotnet_service_name
   service_name        = var.service_name
   service_handler     = var.service_handler
@@ -31,6 +42,8 @@ module "merge_employee" {
     aws = aws.usr1
   }
 
+  aws_region_name     = data.aws_region.current.name
+  aws_account_id      = data.aws_caller_identity.current.account_id
   dotnet_service_name = var.dotnet_service_name
   service_name        = var.service_name
   service_handler     = var.service_handler

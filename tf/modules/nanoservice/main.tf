@@ -99,7 +99,7 @@ resource "aws_lambda_function" "nanoservice" {
 
   environment {
     variables = {
-      EMPLOYEE_MERGE_SAVE_SNS_ARN = "arn:aws:sns:${data.aws_region.name}:${data.aws_caller_identity.current.account_id}:employee_merge_save"
+      EMPLOYEE_MERGE_SAVE_SNS_ARN = "arn:aws:sns:${var.aws_region_name}:${var.aws_account_id}:employee_merge_save"
     }
   }
 }
