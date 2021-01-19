@@ -39,6 +39,8 @@ class DeployService:
         self.zip_pkg_path = os.path.join(
             self.project_location, self.zip_pkg_name)
         self.zip_pkg_target_location = os.path.join("tf", self.zip_pkg_name)
+        self.tfvar_defaults_file_path = os.path.join(
+            "tfvars", "defaults.tfvars.json")
         self.tfvar_file_path = os.path.join(
             "tfvars", f"{self.service}.tfvars.json")
         pass
@@ -82,6 +84,7 @@ class DeployService:
             "terraform",
             "apply",
             "-auto-approve",
+            f"-var-file={self.tfvar_defaults_file_path}",
             f"-var-file={self.tfvar_file_path}",
             f"-target=module.{self.service}"
         ]
