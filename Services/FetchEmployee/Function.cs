@@ -1,7 +1,7 @@
 ﻿using System;
 using Amazon.Lambda.Core;
 using Amazon.XRay.Recorder.Handlers.AwsSdk;
-using Shared;
+using Shared.Models;
 
 namespace FetchEmployee
 {

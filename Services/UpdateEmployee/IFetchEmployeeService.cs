@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using Shared;
+using Shared.Models;
 
 namespace UpdateEmployee
 {

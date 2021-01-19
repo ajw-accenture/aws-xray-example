@@ -6,7 +6,7 @@ using Amazon.Lambda.Model;
 using Amazon.XRay.Recorder.Core;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using Shared;
+using Shared.Models;
 
 namespace UpdateEmployee
 {
