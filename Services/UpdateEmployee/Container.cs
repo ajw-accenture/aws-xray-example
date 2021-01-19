@@ -1,6 +1,8 @@
 ﻿using System;
 using Amazon.XRay.Recorder.Core;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using NLog.Extensions.Logging;
 
 namespace UpdateEmployee
 {
@@ -23,7 +25,11 @@ namespace UpdateEmployee
 
             servicesCollection.AddSingleton(AWSXRayRecorder.Instance);
 
-            servicesCollection.AddLogging();
+            servicesCollection.AddLogging((loggingBuilder) => {
+                loggingBuilder.ClearProviders();
+                loggingBuilder.SetMinimumLevel(LogLevel.Trace);
+                loggingBuilder.AddNLog();
+            });
 
             servicesCollection.AddSingleton<IFetchEmployeeService, FetchEmployeeService>();
 
