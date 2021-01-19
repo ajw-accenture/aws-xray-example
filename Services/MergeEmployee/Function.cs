@@ -16,9 +16,9 @@ namespace MergeEmployee
         }
 
         [Amazon.Lambda.Core.LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
-        public void Invoke(object input, ILambdaContext content)
+        public void Invoke(object input, ILambdaContext context)
         {
-            content.Logger.LogLine("Hello, world!");
+            context.Logger.LogLine("Hello, world!");
         }
     }
 }
