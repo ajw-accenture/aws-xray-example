@@ -20,5 +20,5 @@
 
 ## How to run
 
-1. Trigger the `update_employee` lambda via the AWS console or AWS CLI.
+1. Trigger the `update_employee_nanoservice` lambda via the AWS console or AWS CLI.
 2. Visit the AWS X-Ray console page and then click Traces to see traces from the execution of the lambda.
