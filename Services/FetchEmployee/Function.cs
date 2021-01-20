@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.Model;
@@ -24,6 +25,8 @@ namespace FetchEmployee
         [LambdaSerializer(typeof(DefaultLambdaJsonSerializer))]
         public async Task<Employee> Invoke(object input, ILambdaContext context)
         {
+            SomethingThatTakesForever();
+
             var dynamo = new AmazonDynamoDBClient();
             var employees = await dynamo.ScanAsync(new ScanRequest
             {
@@ -39,6 +42,11 @@ namespace FetchEmployee
                 Name = firstEmployee["name"].S,
                 Department = firstEmployee["department"].S
             };
+        }
+
+        private void SomethingThatTakesForever()
+        {
+            Thread.Sleep(12 * 1000);
         }
     }
 }
