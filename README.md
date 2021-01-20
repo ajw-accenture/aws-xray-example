@@ -1,4 +1,4 @@
-# Employee Product
+# Update an Employee
 
 ## Initialize environment
 
@@ -20,5 +20,6 @@
 
 ## How to run
 
-1. Trigger the `update_employee_nanoservice` lambda via the AWS console or AWS CLI.
-2. Visit the AWS X-Ray console page and then click Traces to see traces from the execution of the lambda.
+1. Add a record to the `employee_document_db` DynamoDB table.  The record needs a `personnel_id`, a `name`, and a `department`.
+2. Trigger the `update_employee_nanoservice` lambda via the AWS console or AWS CLI.
+3. Visit the AWS X-Ray console page and then click Traces to see traces from the execution of the lambda.
