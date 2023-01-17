@@ -64,6 +64,8 @@ class DeployService:
         package_cmd = ["dotnet", "lambda", "package",
                        self.zip_pkg_name, "-pt zip", "-c Release"]
         pkg_cmd_result = subprocess.run(package_cmd, cwd=self.project_location)
+        pkg_stat = os.stat(self.zip_pkg_path)
+        print(f"Size: {pkg_stat.st_size / 1024:#.2f} kilobytes")
         if pkg_cmd_result.returncode != 0:
             return False
         print('Done.')

@@ -1,3 +1,11 @@
+terraform {
+  required_providers {
+    aws = {
+      source = "hashicorp/aws"
+    }
+  }
+}
+
 resource "aws_dynamodb_table" "document_db" {
   name           = var.db_name
   read_capacity  = 20

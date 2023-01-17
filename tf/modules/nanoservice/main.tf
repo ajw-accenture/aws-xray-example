@@ -1,3 +1,11 @@
+terraform {
+  required_providers {
+    aws = {
+      source = "hashicorp/aws"
+    }
+  }
+}
+
 resource "aws_iam_role" "role_for_nanoservice" {
   name = "role_for_${var.service_name}_nanoservice"
 

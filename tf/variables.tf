@@ -22,3 +22,11 @@ variable "data_bus_name" {
     type = string
     description = "The name of the data bus."
 }
+
+variable "aws_account_id" {
+  type = string
+}
+
+variable "aws_region_name" {
+  type = string
+}
