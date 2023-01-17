@@ -2,9 +2,6 @@ import os
 import argparse
 import subprocess
 import shutil
-import time
-
-DOTNET_TARGET = "netcoreapp3.1"
 
 service_to_proj = {
     "update_employee": os.path.join("Services", "UpdateEmployee"),
